@@ -1,9 +1,8 @@
-import { Box, Paper } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
-import { useEffect, useState } from 'react';
-import { UseDeleteContext } from '../../../contexts/DeleteContext';
-import NotebooksSPServices from '../../../services/sao_paulo/notebooks/NotebooksSPServices';
-
+import { Box, Paper } from "@mui/material";
+import { DataGridPremium } from "@mui/x-data-grid-premium";
+import { useEffect, useState } from "react";
+import { UseDeleteContext } from "../../../contexts/DeleteContext";
+import NotebooksSPServices from "../../../services/sao_paulo/notebooks/NotebooksSPServices";
 
 interface INotebooksGetAll {
   id: number;
@@ -15,35 +14,40 @@ interface INotebooksGetAll {
   patrimonio: number;
 }
 
-
 const NotebooksList = () => {
-
   const [notebooks, setNotebooks] = useState<INotebooksGetAll[]>([]);
   const { setCheckbox, checkbox } = UseDeleteContext();
 
   const columns = [
-    { field: 'col1', headerName: 'Data', width: 280 },
-    { field: 'col2', headerName: 'Marca', width: 280  },
-    { field: 'col3', headerName: 'Modelo', width: 280 },
-    { field: 'col4', headerName: 'MAC', width: 280  },
-    { field: 'col5', headerName: 'N° Serial', width: 280  },
-    { field: 'col6', headerName: 'Patrimônio', width: 160 }, 
+    { field: "col1", headerName: "Data", width: 280 },
+    { field: "col2", headerName: "Marca", width: 280 },
+    { field: "col3", headerName: "Modelo", width: 280 },
+    { field: "col4", headerName: "MAC", width: 280 },
+    { field: "col5", headerName: "N° Serial", width: 280 },
+    { field: "col6", headerName: "Patrimônio", width: 160 },
   ];
 
-  const rows = notebooks.length > 0 ? notebooks.map(notebook => (
-    { id: notebook.id, col1: notebook.data, col2: notebook.marca, col3: notebook.modelo, col4: notebook.mac, col5: notebook.serial, col6: notebook.patrimonio }
-  )) : [];
+  const rows =
+    notebooks.length > 0
+      ? notebooks.map((notebook) => ({
+          id: notebook.id,
+          col1: notebook.data,
+          col2: notebook.marca,
+          col3: notebook.modelo,
+          col4: notebook.mac,
+          col5: notebook.serial,
+          col6: notebook.patrimonio,
+        }))
+      : [];
 
-  
   useEffect(() => {
-    NotebooksSPServices.getAll()
-      .then(res => setNotebooks(res));
+    NotebooksSPServices.getAll().then((res) => setNotebooks(res));
   }, []);
 
   return (
     <Box component={Paper}>
-      <div style={{ height: 632, width: '100%', textAlign: 'center' }}>
-        <DataGrid
+      <div style={{ height: "70vh", width: "100%", textAlign: "center" }}>
+        <DataGridPremium
           rows={rows}
           columns={columns}
           pageSize={10}
@@ -54,7 +58,6 @@ const NotebooksList = () => {
         />
       </div>
     </Box>
-
   );
 };
 
