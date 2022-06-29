@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   CardMedia,
   FormControl,
   InputLabel,
@@ -28,7 +29,7 @@ const Login: React.FC = () => {
         component={Paper}
         width={500}
         height={500}
-        padding={5}
+        paddingX={5}
         borderRadius={2}
       >
         <form>
@@ -45,7 +46,7 @@ const Login: React.FC = () => {
             type="password"
             sx={{ marginBottom: 4 }}
           />
-          <FormControl fullWidth>
+          <FormControl fullWidth sx={{ marginBottom: 4 }}>
             <InputLabel>Departamento</InputLabel>
             <Select
               label="Departamento"
@@ -58,6 +59,9 @@ const Login: React.FC = () => {
               <MenuItem value={3}>Thirty</MenuItem>
             </Select>
           </FormControl>
+          <Button fullWidth variant="contained">
+            Enviar
+          </Button>
         </form>
       </Box>
     </Box>
