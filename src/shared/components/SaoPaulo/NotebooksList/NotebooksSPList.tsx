@@ -1,5 +1,5 @@
 import { Box, Paper } from "@mui/material";
-import { DataGridPremium } from "@mui/x-data-grid-premium";
+import { DataGridPro } from "@mui/x-data-grid-pro";
 import { useEffect, useState } from "react";
 import { UseDeleteContext } from "../../../contexts/DeleteContext";
 import NotebooksSPServices from "../../../services/sao_paulo/notebooks/NotebooksSPServices";
@@ -23,7 +23,7 @@ const NotebooksList = () => {
     { field: "col2", headerName: "Marca", width: 280 },
     { field: "col3", headerName: "Modelo", width: 280 },
     { field: "col4", headerName: "MAC", width: 280 },
-    { field: "col5", headerName: "N° Serial", width: 280 },
+    { field: "col5", headerName: "N° Serial", width: 270 },
     { field: "col6", headerName: "Patrimônio", width: 160 },
   ];
 
@@ -47,7 +47,7 @@ const NotebooksList = () => {
   return (
     <Box component={Paper}>
       <div style={{ height: "70vh", width: "100%", textAlign: "center" }}>
-        <DataGridPremium
+        <DataGridPro
           rows={rows}
           columns={columns}
           pageSize={10}

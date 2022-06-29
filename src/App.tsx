@@ -6,17 +6,14 @@ import DrawerProvider from "./shared/contexts/DrawerContext";
 import AppThemeProvider from "./shared/contexts/ThemeContext";
 import { LicenseInfo } from "@mui/x-license-pro";
 
-LicenseInfo.setLicenseKey("YOUR_LICENSE_KEY");
-
 const App = () => {
+  LicenseInfo.setLicenseKey(`${process.env.REACT_APP_LICENSE_KEY}`);
   return (
     <DrawerProvider>
       <AppThemeProvider>
         <DeleteProvider>
           <BrowserRouter>
-            <LateralMenu>
-              <AppRoute />
-            </LateralMenu>
+            <AppRoute />
           </BrowserRouter>
         </DeleteProvider>
       </AppThemeProvider>
