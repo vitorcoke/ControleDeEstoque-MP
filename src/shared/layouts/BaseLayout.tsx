@@ -10,7 +10,7 @@ import { ReactNode } from "react";
 import { UseDrawerContext } from "../contexts/DrawerContext";
 
 interface IBaseLayoutProps {
-  title: string;
+  title: string | ReactNode;
   toolbar?: ReactNode;
 }
 

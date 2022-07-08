@@ -9,13 +9,30 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import LogoMinhaPortaria from "../../../assets/img/MinhaPortaria/MinhaPortaria.png";
 import LogoFocusTelecomm from "../../../assets/img/FocusTelecomm/FocusTelecomm.png";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { AuthContext } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+
+type FormValues = {
+  username: string;
+  password: string;
+};
 
 const Login: React.FC = () => {
   const [logo, setLogo] = useState(LogoMinhaPortaria);
   const [departamento, setDepartamento] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const { register, handleSubmit } = useForm<FormValues>();
+  const { singIn } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handlerSingIn: SubmitHandler<FormValues> = async (data) => {
+    await singIn(data);
+  };
 
   return (
     <Box
@@ -32,19 +49,27 @@ const Login: React.FC = () => {
         paddingX={5}
         borderRadius={2}
       >
-        <form>
+        <form onSubmit={handleSubmit(handlerSingIn)}>
           <CardMedia component="img" image={LogoFocusTelecomm} />
           <TextField
+            {...register("username")}
             required
             fullWidth
             label="Usuario"
+            name="username"
+            value={username}
             sx={{ marginBottom: 4 }}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <TextField
+            {...register("password")}
             fullWidth
             label="Senha"
             type="password"
+            name="password"
+            value={password}
             sx={{ marginBottom: 4 }}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <FormControl fullWidth sx={{ marginBottom: 4 }}>
             <InputLabel>Departamento</InputLabel>
@@ -59,7 +84,7 @@ const Login: React.FC = () => {
               <MenuItem value={3}>Thirty</MenuItem>
             </Select>
           </FormControl>
-          <Button fullWidth variant="contained">
+          <Button fullWidth variant="contained" type="submit">
             Enviar
           </Button>
         </form>
