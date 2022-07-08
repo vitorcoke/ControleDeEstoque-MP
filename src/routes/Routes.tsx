@@ -8,20 +8,23 @@ import ChangeUsers from "../pages/minhaPortaria/ChangeUsers";
 import Notebooks from "../pages/minhaPortaria/Notebooks";
 import Perifericos from "../pages/minhaPortaria/Perifericos";
 import LoginAuth from "../pages/login/LoginAuth";
+import { AuthProvider } from "./../shared/contexts/AuthContext";
 
 const AppRoute = () => {
   return (
-    <Routes>
-      <Route path="/" element={<LoginAuth />} />
-      <Route path="notebooksSP" element={<Notebooks />} />
-      <Route path="notebooksSP/inserir" element={<NewNotebooks />} />
-      <Route path="notebooksSP/pesquisar/:id" element={<SeachNotebooks />} />
-      <Route path="notebooksSP/alterar/:id" element={<ChangeNotebooks />} />
-      <Route path="usuariosSP" element={<Users />} />
-      <Route path="usuariosSP/inserir" element={<NewUser />} />
-      <Route path="usuariosSP/alterar/:id" element={<ChangeUsers />} />
-      <Route path="perifericosSP" element={<Perifericos />} />
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<LoginAuth />} />
+        <Route path="notebooksSP" element={<Notebooks />} />
+        <Route path="notebooksSP/inserir" element={<NewNotebooks />} />
+        <Route path="notebooksSP/pesquisar/:id" element={<SeachNotebooks />} />
+        <Route path="notebooksSP/alterar/:id" element={<ChangeNotebooks />} />
+        <Route path="usuariosSP" element={<Users />} />
+        <Route path="usuariosSP/inserir" element={<NewUser />} />
+        <Route path="usuariosSP/alterar/:id" element={<ChangeUsers />} />
+        <Route path="perifericosSP" element={<Perifericos />} />
+      </Routes>
+    </AuthProvider>
   );
 };
 

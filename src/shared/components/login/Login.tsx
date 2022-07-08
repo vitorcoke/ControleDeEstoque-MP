@@ -28,7 +28,6 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
   const { register, handleSubmit } = useForm<FormValues>();
   const { singIn } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   const handlerSingIn: SubmitHandler<FormValues> = async (data) => {
     await singIn(data);
