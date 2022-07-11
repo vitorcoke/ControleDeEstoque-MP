@@ -1,4 +1,4 @@
-import Login from "../../shared/components/Login/Login";
+import Login from "../../shared/components/login/Login";
 
 const LoginAuth = () => {
   return <Login />;

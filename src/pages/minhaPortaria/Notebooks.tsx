@@ -1,3 +1,4 @@
+import { parseCookies } from "nookies";
 import { useContext } from "react";
 import NotebooksSPList from "../../shared/components/SaoPaulo/NotebooksList/NotebooksSPList";
 import ToolbarDetail from "../../shared/components/Toolbar-Detail/ToolbarList";
@@ -10,6 +11,8 @@ const Notebooks = () => {
 
   const ButtonDelete = checkbox.length >= 1 ? true : false;
 
+  const { user } = useContext(AuthContext);
+
   return (
     <BaseLayout
       toolbar={
@@ -18,7 +21,7 @@ const Notebooks = () => {
           mostrarBotaoNovoNotebooks
         />
       }
-      title="Notebooks"
+      title={`${user?.email} - Notebooks`}
     >
       <NotebooksSPList />
     </BaseLayout>

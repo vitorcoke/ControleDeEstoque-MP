@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
-import UserLoginServices from "../services/userLogin/userLoginServices";
-import { setCookie, parseCookies } from "nookies";
-import Api from "../services/axios-config";
+import { setCookie, parseCookies, destroyCookie } from "nookies";
+import api from "../services/axios-config";
+import { useNavigate } from "react-router-dom";
 
 type RefreshToken = {
   id: number;
@@ -14,40 +14,57 @@ type SingInData = {
   password: string;
 };
 
+type User = {
+  username: string;
+  email: string;
+};
+
 type AuthContextType = {
   singIn: (data: SingInData) => Promise<void>;
   isAutethicated: boolean;
+  user: User | null;
 };
 export const AuthContext = createContext({} as AuthContextType);
 
 export const AuthProvider: React.FC = ({ children }) => {
-  const [isAutethicated, setIsAutethicated] = useState(false);
-  // const [refreshToken, setRefreshToken] = useState<RefreshToken | null>(null);
+  const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
+  const isAutethicated = !!user;
 
-  // useEffect(() => {
-  //   if (refreshToken) {
-  //     UserLoginServices.refreshToken(refreshToken).then((user) => {
-  //       console.log(user);
-  //     });
-  //   }
-  // }, []);
+  useEffect(() => {
+    const { "mp-token": token } = parseCookies();
 
-  // console.log(refreshToken);
+    const fetchUserInfos = async () => {
+      try {
+        const { data } = await api.get("/bytoken");
+        setUser(data);
+      } catch {
+        destroyCookie(undefined, "mp-token");
+        navigate("/");
+      }
+    };
 
-  async function singIn(data: SingInData) {
-    const { token } = await UserLoginServices.login(data);
+    if (token) fetchUserInfos();
+  }, []);
 
-    setCookie(undefined, "token", token, {
-      maxAge: 60 * 60 * 1, // 1hora
-    });
+  async function singIn({ username, password }: SingInData) {
+    try {
+      const { data } = await api.post("/login", { username, password });
+      setCookie(null, "mp-token", data.token, {
+        maxAge: 60 * 60 * 1,
+      });
+      setUser(data.user);
 
-    Api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      api.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
 
-    setIsAutethicated(true);
+      return navigate("/notebooksSP");
+    } catch (error) {
+      console.log(`Erro: ${error}`);
+    }
   }
 
   return (
-    <AuthContext.Provider value={{ singIn, isAutethicated }}>
+    <AuthContext.Provider value={{ user, singIn, isAutethicated }}>
       {children}
     </AuthContext.Provider>
   );

@@ -9,28 +9,21 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import LogoMinhaPortaria from "../../../assets/img/MinhaPortaria/MinhaPortaria.png";
 import LogoFocusTelecomm from "../../../assets/img/FocusTelecomm/FocusTelecomm.png";
-import { SubmitHandler, useForm } from "react-hook-form";
 import { AuthContext } from "../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
-
-type FormValues = {
-  username: string;
-  password: string;
-};
 
 const Login: React.FC = () => {
   const [logo, setLogo] = useState(LogoMinhaPortaria);
   const [departamento, setDepartamento] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { register, handleSubmit } = useForm<FormValues>();
   const { singIn } = useContext(AuthContext);
 
-  const handlerSingIn: SubmitHandler<FormValues> = async (data) => {
-    await singIn(data);
+  const handlerSingIn = (evente: React.FormEvent<HTMLFormElement>) => {
+    evente.preventDefault();
+    singIn({ username, password });
   };
 
   return (
@@ -48,10 +41,9 @@ const Login: React.FC = () => {
         paddingX={5}
         borderRadius={2}
       >
-        <form onSubmit={handleSubmit(handlerSingIn)}>
+        <form onSubmit={handlerSingIn}>
           <CardMedia component="img" image={LogoFocusTelecomm} />
           <TextField
-            {...register("username")}
             required
             fullWidth
             label="Usuario"
@@ -61,7 +53,6 @@ const Login: React.FC = () => {
             onChange={(e) => setUsername(e.target.value)}
           />
           <TextField
-            {...register("password")}
             fullWidth
             label="Senha"
             type="password"
